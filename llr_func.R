@@ -23,21 +23,9 @@ llr = function(x, y, z, omega) {
 compute_f_hat = function(z, x, y, omega) {
   Wz = make_weight_matrix(z, x, omega)
   X = make_predictor_matrix(x)
-  f_hat = c(1, z) %*% solve(t(X)%*% apply(t(X),1,function(x){Wz*x})) %*% t(X) %*% mapply(function(x,y){x*y},Wz,y)
+  f_hat = c(1, z) %*% solve(t(X) %*% Wz %*% X) %*% t(X) %*% Wz %*% y
   return(f_hat)
 }
-
-
-#t(X) %*% diag(Wz) %*% X
-#t(X)%*% apply(t(X),1,function(x){Wz*x})
-
-#dim(t(X) %*% diag(Wz))
-#length(Wz)
-#apply(t(X),2,function(x){colSums(x * Wz)}) %*% y
-
-#dim(lapply(Wz,function(x){rowSums(t(X) * x)}))
-
-#t(apply(t(X),1,function(x){Wz*x})) %*% y
 
 #' @param z (numeric) must be a scalar
 #' @param x (numeric) vector of arbitrary length
@@ -46,8 +34,8 @@ compute_f_hat = function(z, x, y, omega) {
 make_weight_matrix = function(z, x, omega) {
   r = abs(x - z) / omega  # this is a vector of the same length as x
   w = sapply(r, W)  # this is a vector of the same length as x and r
-  #Wz = diag(w)  # this is a diagonal matrix with elements from w
-  return(w)
+  Wz = diag(w)  # this is a diagonal matrix with elements from w
+  return(Wz)
 }
 
 #' @param r (numeric) must be a scalar
