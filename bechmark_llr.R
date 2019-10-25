@@ -5,9 +5,9 @@ dir<-getwd()
 setwd(toString(paste(dir,"/Stat610/",sep='')))
 #source("/Users/addytan/Stat610/llr_functions.R")
 
-#bnch <- bench::mark(
-#  source("llr_functions.R"))
-#bnch
+bnchmark <- bench::mark(
+   source("llr_func.R"))
+bnchmark
 
 bnch <- bench::mark(
   source("llr.R"))
