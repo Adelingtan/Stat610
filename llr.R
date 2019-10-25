@@ -23,12 +23,12 @@ llr = function(x, y, z, omega) {
 compute_f_hat = function(z, x, y, omega) {
   Wz = make_weight_matrix(z, x, omega)
   X = make_predictor_matrix(x)
-  f_hat = c(1, z) %*% solve(t(X)%*% apply(t(X),1,function(x){Wz*x})) %*% t(X) %*% (Wz*y)
+  f_hat = c(1, z) %*% solve(t(X)%*% sweep(X, 1 , Wz, FUN = "*")) %*% t(X) %*% (Wz*y)
   return(f_hat)
 }
 
-
-
+#sweep(X, 1 , Wz, FUN = "*")
+#diag(Wz) %*% X==sweep(X, 1 , Wz, FUN = "*")
 #t(X) %*% diag(Wz) %*% X
 #t(X)%*% apply(t(X),1,function(x){Wz*x})
 
